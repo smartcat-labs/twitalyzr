@@ -3,14 +3,11 @@ package io.smartcat.twicas.tweet
 import org.apache.spark.sql.Row
 import twitter4j.Status
 
-/**
-  * Created by stanko on 27.12.16..
-  */
 case class Tweet(id: String, text: String, favoriteCount: Long,
                  hashtags: Array[String], urls: Array[String], retweetCount: Long,
                  userFollowers: Long, userFriendsCount: Long, userDescription: String, label: Long) extends Serializable
 
-object Tweet extends Serializable{
+object Tweet extends Serializable {
 
   def makeStream(status: Status): Tweet = {
     val hashtags = status.getHashtagEntities.map(entity => entity.getText)
