@@ -2,8 +2,8 @@ package io.smartcat.twicas
 
 import io.smartcat.twicas.tweet.Tweet
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.streaming.twitter.TwitterUtils
+import org.apache.spark.streaming.{Seconds, StreamingContext}
 
 object ClassifyJob extends App {
   val spark = SparkSession.builder()
@@ -24,7 +24,7 @@ object ClassifyJob extends App {
   System.setProperty("twitter4j.oauth.accessToken", token)
   System.setProperty("twitter4j.oauth.accessTokenSecret", tokenSecret)
 
-  val ssc = new StreamingContext(spark.sparkContext,Seconds(interval))
+  val ssc = new StreamingContext(spark.sparkContext, Seconds(interval))
   val tweetStream = TwitterUtils.createStream(ssc, None, Seq(searchFilter))
 
   import spark.sqlContext.implicits._

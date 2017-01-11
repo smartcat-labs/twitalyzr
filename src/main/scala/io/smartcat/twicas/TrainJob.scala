@@ -1,6 +1,5 @@
 package io.smartcat.twicas
 
-import io.smartcat.twicas.preprocessing.models._
 import io.smartcat.twicas.pipeline.PipelineProcessor
 import io.smartcat.twicas.preprocessing._
 import io.smartcat.twicas.tweet.Tweet
@@ -36,9 +35,9 @@ object TrainJob extends App {
 
   val idf = FeatureIDF.make(result, List("text_t_tf", "userDescription_t_tf"))
 
-  val assembler = FeatureAssembler.make(List("text_t_tf_idf","userDescription_t_tf_idf"))
+  val assembler = FeatureAssembler.make(List("text_t_tf_idf", "userDescription_t_tf_idf"))
 
-  val preprocessPipelinePreprocess = new PipelineProcessor(List(textCleaner,tokenizer,hashingTF, idf, assembler))
+  val preprocessPipelinePreprocess = new PipelineProcessor(List(textCleaner, tokenizer, hashingTF, idf, assembler))
   val res = preprocessPipelinePreprocess.processAll(df)
 
   res.select("features").show(false)

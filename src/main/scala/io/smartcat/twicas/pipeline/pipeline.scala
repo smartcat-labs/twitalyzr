@@ -9,7 +9,7 @@ trait Pipeline extends Serializable {
 
 class PipelineProcessor(pipelines: List[Pipeline]) extends Serializable {
 
-  def processAll(df: DataFrame): DataFrame = pipelines.foldLeft(df)((dff,pipeline) => pipeline.process(dff))
+  def processAll(df: DataFrame): DataFrame = pipelines.foldLeft(df)((dff, pipeline) => pipeline.process(dff))
 
 }
 
