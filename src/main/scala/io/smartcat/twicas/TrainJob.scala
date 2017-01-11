@@ -1,5 +1,6 @@
 package io.smartcat.twicas
 
+import io.smartcat.twicas.models.LogisticRegressionTweet
 import io.smartcat.twicas.pipeline.PipelineProcessor
 import io.smartcat.twicas.preprocessing._
 import io.smartcat.twicas.tweet.Tweet
@@ -41,5 +42,11 @@ object TrainJob extends App {
   val res = preprocessPipelinePreprocess.processAll(df)
 
   res.select("features").show(false)
+
+  val model = LogisticRegressionTweet.train(res)
+
+  val predicted = model.classify(res)
+
+  predicted.select("prediction").show(false)
 
 }
