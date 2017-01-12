@@ -7,13 +7,13 @@ import org.apache.spark.sql.functions._
 case class ModelSummary(tp:Int, fp:Int, tn:Int, fn:Int, classificationModel: ClassificationModel) extends Serializable{
   val total:Int = tp + fp + tn + fn
 
-  val precision:Double = tp / (1.0 * (tp + fp))
+  def precision:Double = tp / (1.0 * (tp + fp))
 
-  val recall:Double = tp / (1.0 * (tp + fn))
+  def recall:Double = tp / (1.0 * (tp + fn))
 
-  val accuracy:Double = (tp + tn)/(1.0 * total)
+  def accuracy:Double = (tp + tn)/(1.0 * total)
 
-  val fMeasure:Double = 2*(precision + recall)/(1.0 * (precision + recall))
+  def fMeasure:Double = 2*(precision + recall)/(1.0 * (precision + recall))
 
   lazy val results:Map[String,Double] =
     Map(

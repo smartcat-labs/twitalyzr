@@ -3,7 +3,7 @@ package io.smartcat.twicas
 import io.smartcat.twicas.models.LogisticRegressionTweet
 import io.smartcat.twicas.pipeline.PipelineProcessor
 import io.smartcat.twicas.preprocessing._
-import io.smartcat.twicas.summary.ModelSummary
+import io.smartcat.twicas.summary.{ModelSummary, ParameterOptimization}
 import io.smartcat.twicas.tweet.Tweet
 import org.apache.spark.sql.SparkSession
 
@@ -59,6 +59,12 @@ object TrainJob extends App {
   println("\n")
 
   println(summary.report)
+
+  val parOpt = new ParameterOptimization(List(summary, summary))
+
+  val op = parOpt.getKBest((model:ModelSummary) => model.fMeasure, 1)
+
+  println(op.head.report)
 
   //val predicted = model.classify(res)
 
