@@ -3,13 +3,13 @@ package io.smartcat.twicas.models
 import io.smartcat.twicas.pipeline.Pipeline
 import org.apache.spark.sql.DataFrame
 
-abstract class ClassificationModel extends Pipeline{
-  val name:String
+abstract class ClassificationModel extends Pipeline {
+  val name: String
 
   override def process(df: DataFrame): DataFrame = classify(df)
 
-  def classify(df:DataFrame):DataFrame
+  def classify(df: DataFrame): DataFrame
 
-  def params:Map[String,Double]
+  def params: Map[String, Double]
 
 }

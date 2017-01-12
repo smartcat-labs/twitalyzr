@@ -46,27 +46,27 @@ object TrainJob extends App {
 
   val model = LogisticRegressionTweet.train(res)
 
-  val summary = ModelSummary.validation(res,model)
+  val summary = ModelSummary.validation(res, model)
 
   println("\n")
-  println("True Positive "+summary.tp)
-  println("True Negative "+summary.tn)
-  println("False positive "+summary.fp)
-  println("False negative "+summary.fn)
-  println("Precision "+summary.precision)
-  println("Recall "+summary.recall)
-  println("Accuracy "+summary.accuracy)
+  println("True Positive " + summary.tp)
+  println("True Negative " + summary.tn)
+  println("False positive " + summary.fp)
+  println("False negative " + summary.fn)
+  println("Precision " + summary.precision)
+  println("Recall " + summary.recall)
+  println("Accuracy " + summary.accuracy)
   println("\n")
 
   println(summary.report)
 
-  val parOpt =  ParameterOptimization(List(summary, summary))
+  val parOpt = ParameterOptimization(List(summary, summary))
 
-  val op = parOpt.getKBest((model:ModelSummary) => model.fMeasure, 1)
+  val op = parOpt.getKBest((model: ModelSummary) => model.fMeasure, 1)
 
   println(op.head.report)
 
-  val modelSummaries = LogisticRegressionTweet.makeModels(res,res,List(0.5,0.6),List(0.0),List(0.0))
+  val modelSummaries = LogisticRegressionTweet.makeModels(res, res, List(0.5, 0.6), List(0.0), List(0.0))
 
   println("FINAL:")
   println(modelSummaries.report)
