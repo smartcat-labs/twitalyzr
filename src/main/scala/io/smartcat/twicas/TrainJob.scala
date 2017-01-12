@@ -46,7 +46,7 @@ object TrainJob extends App {
 
   val model = LogisticRegressionTweet.train(res)
 
-  val summary = ModelSummary.crossValidation(res,model)
+  val summary = ModelSummary.validation(res,model)
 
   println("\n")
   println("True Positive "+summary.tp)
@@ -60,12 +60,16 @@ object TrainJob extends App {
 
   println(summary.report)
 
-  val parOpt = new ParameterOptimization(List(summary, summary))
+  val parOpt =  ParameterOptimization(List(summary, summary))
 
   val op = parOpt.getKBest((model:ModelSummary) => model.fMeasure, 1)
 
   println(op.head.report)
 
+  val modelSummaries = LogisticRegressionTweet.makeModels(res,res,List(0.5,0.6),List(0.0),List(0.0))
+
+  println("FINAL:")
+  println(modelSummaries.report)
   //val predicted = model.classify(res)
 
   //predicted.select("prediction").show(false)
