@@ -15,6 +15,24 @@ case class ModelSummary(tp:Int, fp:Int, tn:Int, fn:Int, classificationModel: Cla
 
   val fMeasure:Double = 2*(precision + recall)/(1.0 * (precision + recall))
 
+  lazy val results:Map[String,Double] =
+    Map(
+      "precision" -> precision,
+      "recall" -> recall,
+      "accuracy" -> accuracy,
+      "F Measure" -> fMeasure
+    )
+
+  lazy val report:String = {
+
+    val filler = "\n-------------------------\n"
+    val resultsStr = results map { case (key, value) => "%s : %s" format (key, value) } mkString ("\n","\n", "\n")
+    val parametersStr = classificationModel.params map {case (key, value) => "%s : %s" format(key, value)} mkString("\n", "\n", "\n")
+
+    List(filler, "MESUREMENT\n", classificationModel.name, "\n\nPARAMETERS:", parametersStr, "\nRESULTS:",resultsStr, filler).mkString
+
+  }
+
 }
 
 object ModelSummary extends Serializable{

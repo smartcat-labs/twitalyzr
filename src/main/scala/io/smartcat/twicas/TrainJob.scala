@@ -58,6 +58,8 @@ object TrainJob extends App {
   println("Accuracy "+summary.accuracy)
   println("\n")
 
+  println(summary.report)
+
   //val predicted = model.classify(res)
 
   //predicted.select("prediction").show(false)

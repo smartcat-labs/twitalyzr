@@ -3,6 +3,8 @@ import org.apache.spark.ml.classification.{LogisticRegression, LogisticRegressio
 import org.apache.spark.sql.DataFrame
 
 class LogisticRegressionTweet(logisticRegression: LogisticRegressionModel) extends ClassificationModel{
+  val name:String = "Logistic Regression"
+
   override def classify(df: DataFrame): DataFrame = logisticRegression.transform(df)
 
   def params:Map[String,Double] = Map(
