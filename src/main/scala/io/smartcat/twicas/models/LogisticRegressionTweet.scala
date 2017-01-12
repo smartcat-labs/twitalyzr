@@ -1,4 +1,5 @@
 package io.smartcat.twicas.models
+import io.smartcat.twicas.summary.{ModelSummary, ParameterOptimization}
 import org.apache.spark.ml.classification.{LogisticRegression, LogisticRegressionModel}
 import org.apache.spark.sql.DataFrame
 
@@ -31,6 +32,19 @@ object LogisticRegressionTweet extends Serializable{
       .setElasticNetParam(elasticNet)
       .fit(df)
     new LogisticRegressionTweet(model)
+  }
+
+  def makeModels(trainSet:DataFrame, validationSet:DataFrame,
+                 thresholds:List[Double], regParams:List[Double], elasticNet:List[Double]):ParameterOptimization ={
+
+    val parameters = generator(List(thresholds,regParams,elasticNet))
+
+    val models = parameters.map{ case (threshold::regParam::elastic::_) =>
+      train(trainSet,threshold,regParam,elastic)
+    }
+
+    ParameterOptimization(models map(ModelSummary.validation(validationSet,_)))
+
   }
 
 }

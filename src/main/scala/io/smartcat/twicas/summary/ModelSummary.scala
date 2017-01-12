@@ -39,7 +39,7 @@ object ModelSummary extends Serializable{
   val label = "label"
   val prediction = "prediction"
 
-  def crossValidation(df:DataFrame, classificationModel: ClassificationModel):ModelSummary = {
+  def validation(df:DataFrame, classificationModel: ClassificationModel):ModelSummary = {
 
     val classified = classificationModel.classify(df)
     val toLong    = udf[Long, Double]( _.toLong)
