@@ -3,6 +3,7 @@ package io.smartcat.twicas
 import io.smartcat.twicas.models.LogisticRegressionTweet
 import io.smartcat.twicas.pipeline.PipelineProcessor
 import io.smartcat.twicas.preprocessing._
+import io.smartcat.twicas.summary.ModelSummary
 import io.smartcat.twicas.tweet.Tweet
 import org.apache.spark.sql.SparkSession
 
@@ -45,8 +46,20 @@ object TrainJob extends App {
 
   val model = LogisticRegressionTweet.train(res)
 
-  val predicted = model.classify(res)
+  val summary = ModelSummary.crossValidation(res,model)
 
-  predicted.select("prediction").show(false)
+  println("\n")
+  println("True Positive "+summary.tp)
+  println("True Negative "+summary.tn)
+  println("False positive "+summary.fp)
+  println("False negative "+summary.fn)
+  println("Precision "+summary.precision)
+  println("Recall "+summary.recall)
+  println("Accuracy "+summary.accuracy)
+  println("\n")
+
+  //val predicted = model.classify(res)
+
+  //predicted.select("prediction").show(false)
 
 }
