@@ -43,6 +43,7 @@ object TrainJob extends App {
   val preprocessPipelinePreprocess = new PipelineProcessor(List(textCleaner, tokenizer, hashingTF, idf, assembler))
   val res = preprocessPipelinePreprocess.processAll(df)
 
+  //This is just showcase, will add real parameters later.
   val modelSummaries = LogisticRegressionTweet.makeModels(res, res, List(0.5, 0.6), List(0.0), List(0.0))
 
   val op = modelSummaries.getKBest((model: ModelSummary) => model.fMeasure)

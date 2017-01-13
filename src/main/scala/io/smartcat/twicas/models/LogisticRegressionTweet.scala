@@ -22,6 +22,19 @@ object LogisticRegressionTweet extends Serializable {
   val predictionColumn = "prediction"
   val probabilityColumn = "probability"
 
+  /**
+    * This function makes models for every combination of parameters and then validates them on given validation set.
+    * For example:
+    * thresholds = [0.5, 0.6], regParams = [0.0, 0.1], elasticNet = [0.0]
+    * It will make 4 models with parameters like (0.5, 0.0, 0.0), (0.5, 0.1, 0.0), (0.6, 0.0, 0.0), (0.6, 0.1, 0.0)
+    *
+    * @param trainSet      DataFrame - train data set
+    * @param validationSet DataFrame - validation data set
+    * @param thresholds    - list of possible thresholds
+    * @param regParams     - list of possible regularization parameters
+    * @param elasticNet    - list of possible elastic net parameters
+    * @return ParameterOptimization - List of ModelSummary for each combination of parameters
+    */
   def makeModels(trainSet: DataFrame, validationSet: DataFrame,
                  thresholds: List[Double], regParams: List[Double], elasticNet: List[Double]): ParameterOptimization = {
 
@@ -36,10 +49,11 @@ object LogisticRegressionTweet extends Serializable {
   }
 
   /**
+    * This function train model for given train data set and parameters
     *
-    * @param df DataFrame - train data set
-    * @param threshold - classifier probability threshold, prob above that value will be classified as 1
-    * @param regParam - regularization parameter. Default 0.0 -> No regularization
+    * @param df         DataFrame - train data set
+    * @param threshold  - classifier probability threshold, prob above that value will be classified as 1
+    * @param regParam   - regularization parameter. Default 0.0 -> No regularization
     * @param elasticNet - regularization parameter Default 0.0 -> No regularization
     * @return LogisticRegressionTweet (ClassificationModel) trained model on data set df, and given parameters
     */
