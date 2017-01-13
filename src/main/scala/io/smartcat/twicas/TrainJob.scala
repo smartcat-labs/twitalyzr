@@ -70,6 +70,18 @@ object TrainJob extends App {
 
   println("FINAL:")
   println(modelSummaries.report)
+
+  val finalPipeline = new PipelineProcessor(List(textCleaner, tokenizer, hashingTF, idf, assembler, model))
+
+  PipelineProcessor.saveToFile("/home/stanko/Documents/myModel.tcm", finalPipeline)
+
+  println("SAVED")
+
+  val loadedPipeline = PipelineProcessor.loadFromFile("/home/stanko/Documents/myModel.tcm")
+
+  println("LOADED")
+
+
   //val predicted = model.classify(res)
 
   //predicted.select("prediction").show(false)

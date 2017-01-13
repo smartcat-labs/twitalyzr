@@ -1,5 +1,7 @@
 package io.smartcat.twicas.pipeline
 
+import java.io._
+
 import org.apache.spark.sql.DataFrame
 
 
@@ -9,11 +11,22 @@ class PipelineProcessor(pipelines: List[Pipeline]) extends Serializable {
 
 }
 
-object PipelineProcessor extends Serializable{
+object PipelineProcessor extends Serializable {
 
-  def loadFromFile(filepath:String):PipelineProcessor = ???
+  def loadFromFile(filepath: String): PipelineProcessor = {
+    val loader = Thread.currentThread().getContextClassLoader
+    val objIn = new ObjectInputStream(new FileInputStream(filepath)) {
+      override def resolveClass(desc: ObjectStreamClass): Class[_] =
+        Class.forName(desc.getName, false, loader)
+    }
+    objIn.readObject.asInstanceOf[PipelineProcessor]
+  }
 
-  def saveToFile(filepath:String, pipelineProcessor: PipelineProcessor):Unit = ???
+  def saveToFile(filepath: String, pipelineProcessor: PipelineProcessor): Unit = {
+    val oos = new ObjectOutputStream(new FileOutputStream(filepath))
+    oos.writeObject(pipelineProcessor)
+    oos.close()
 
+  }
 }
 
