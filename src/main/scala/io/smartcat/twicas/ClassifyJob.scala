@@ -1,5 +1,6 @@
 package io.smartcat.twicas
 
+import io.smartcat.twicas.pipeline.PipelineProcessor
 import io.smartcat.twicas.tweet.Tweet
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.streaming.twitter.TwitterUtils
@@ -16,6 +17,7 @@ object ClassifyJob extends App {
   val consumerSecret = ""
 
   val searchFilter = "#cassandra"
+  val pipelineFile = ""
 
   val interval = 10
 
@@ -27,12 +29,19 @@ object ClassifyJob extends App {
   val ssc = new StreamingContext(spark.sparkContext, Seconds(interval))
   val tweetStream = TwitterUtils.createStream(ssc, None, Seq(searchFilter))
 
+  val pipeline = PipelineProcessor.loadFromFile(pipelineFile)
+
   import spark.sqlContext.implicits._
 
   tweetStream.foreachRDD((rdd, time) => {
-    val tweets = rdd.map(Tweet.makeStream)
-    val tweetsDF = tweets.toDF
-    tweetsDF.show(3)
+    if (!rdd.isEmpty()) {
+      val tweets = rdd.map(Tweet.makeStream)
+      val tweetsDF = tweets.toDF
+      val prediction = pipeline.processAll(tweetsDF)
+      /*
+      Filter and save valuable tweets
+       */
+    }
   })
 
   ssc.start()
