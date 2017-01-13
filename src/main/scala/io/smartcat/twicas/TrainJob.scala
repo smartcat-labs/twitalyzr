@@ -42,48 +42,12 @@ object TrainJob extends App {
   val preprocessPipelinePreprocess = new PipelineProcessor(List(textCleaner, tokenizer, hashingTF, idf, assembler))
   val res = preprocessPipelinePreprocess.processAll(df)
 
-  res.select("features").show(false)
-
-  val model = LogisticRegressionTweet.train(res)
-
-  val summary = ModelSummary.validation(res, model)
-
-  println("\n")
-  println("True Positive " + summary.tp)
-  println("True Negative " + summary.tn)
-  println("False positive " + summary.fp)
-  println("False negative " + summary.fn)
-  println("Precision " + summary.precision)
-  println("Recall " + summary.recall)
-  println("Accuracy " + summary.accuracy)
-  println("\n")
-
-  println(summary.report)
-
-  val parOpt = ParameterOptimization(List(summary, summary))
-
-  val op = parOpt.getKBest((model: ModelSummary) => model.fMeasure, 1)
-
-  println(op.head.report)
-
   val modelSummaries = LogisticRegressionTweet.makeModels(res, res, List(0.5, 0.6), List(0.0), List(0.0))
 
-  println("FINAL:")
-  println(modelSummaries.report)
+  val op = modelSummaries.getKBest((model: ModelSummary) => model.fMeasure)
 
-  val finalPipeline = new PipelineProcessor(List(textCleaner, tokenizer, hashingTF, idf, assembler, model))
+  val finalPipeline = new PipelineProcessor(List(textCleaner, tokenizer, hashingTF, idf, assembler, op.head.classificationModel))
 
   PipelineProcessor.saveToFile("/home/stanko/Documents/myModel.tcm", finalPipeline)
-
-  println("SAVED")
-
-  val loadedPipeline = PipelineProcessor.loadFromFile("/home/stanko/Documents/myModel.tcm")
-
-  println("LOADED")
-
-
-  //val predicted = model.classify(res)
-
-  //predicted.select("prediction").show(false)
 
 }
