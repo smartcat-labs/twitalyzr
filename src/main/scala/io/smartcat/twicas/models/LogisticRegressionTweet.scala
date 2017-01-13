@@ -35,6 +35,14 @@ object LogisticRegressionTweet extends Serializable {
 
   }
 
+  /**
+    *
+    * @param df DataFrame - train data set
+    * @param threshold - classifier probability threshold, prob above that value will be classified as 1
+    * @param regParam - regularization parameter. Default 0.0 -> No regularization
+    * @param elasticNet - regularization parameter Default 0.0 -> No regularization
+    * @return LogisticRegressionTweet (ClassificationModel) trained model on data set df, and given parameters
+    */
   def train(df: DataFrame, threshold: Double = 0.5, regParam: Double = 0.0, elasticNet: Double = 0.0): LogisticRegressionTweet = {
     val model = new LogisticRegression()
       .setFeaturesCol(featureColumn)
