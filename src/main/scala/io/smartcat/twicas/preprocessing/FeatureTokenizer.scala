@@ -1,6 +1,6 @@
-package io.smartcat.twicas.preprocessing.models
+package io.smartcat.twicas.preprocessing
 
-import io.smartcat.twicas.preprocessing.pipeline.Pipeline
+import io.smartcat.twicas.pipeline.Pipeline
 import org.apache.spark.ml.feature.RegexTokenizer
 import org.apache.spark.sql.DataFrame
 
