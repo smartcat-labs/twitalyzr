@@ -15,6 +15,7 @@ object TrainJob extends App {
     .getOrCreate()
 
   val filename = "/raw_labeled.json"
+  val modelFile = ""
 
   val resource = TrainJob.getClass.getResourceAsStream(filename)
   val lines = Source.fromInputStream(resource).mkString
@@ -48,6 +49,6 @@ object TrainJob extends App {
 
   val finalPipeline = new PipelineProcessor(List(textCleaner, tokenizer, hashingTF, idf, assembler, op.head.classificationModel))
 
-  PipelineProcessor.saveToFile("/home/stanko/Documents/myModel.tcm", finalPipeline)
+  PipelineProcessor.saveToFile(modelFile, finalPipeline)
 
 }
