@@ -14,7 +14,7 @@ object TrainJob extends App {
     .appName("twitter_trainer")
     .getOrCreate()
 
-  val filename = "/raw_labeled.json"
+  val filename = "/dataset.json"
   val modelFile = ""
 
   val resource = TrainJob.getClass.getResourceAsStream(filename)
