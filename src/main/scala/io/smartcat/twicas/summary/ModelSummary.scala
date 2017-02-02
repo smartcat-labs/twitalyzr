@@ -5,23 +5,17 @@ import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions._
 
 case class ModelSummary(tp: Int, fp: Int, tn: Int, fn: Int, classificationModel: ClassificationModel) extends Serializable {
-  lazy val results: Map[String, Double] =
-    Map(
-      "precision" -> precision,
-      "recall" -> recall,
-      "accuracy" -> accuracy,
-      "F Measure" -> fMeasure
-    )
-  lazy val report: String = {
 
-    val filler = "\n-------------------------\n"
-    val resultsStr = results map { case (key, value) => "%s : %s" format(key, value) } mkString("\n", "\n", "\n")
-    val parametersStr = classificationModel.params map { case (key, value) => "%s : %s" format(key, value) } mkString("\n", "\n", "\n")
+  val total: Int = tp + fp + tn + fn
+  private val resultsFormat = "\nRESULTS:\nPrecision : %s\nRecall : %s\nAccuracy : %s\nF1 Measure : %s\n"
+  private val filler = "\n" + "-" * 20 + "\n"
 
-    List(filler, "MESUREMENT\n", classificationModel.name, "\n\nPARAMETERS:", parametersStr, "\nRESULTS:", resultsStr, filler).mkString
+  override def toString: String = {
+    List(filler, "\nPARAMETERS", classificationModel.toString, "\nRESULTS",
+      resultsFormat.format(precision.toString, recall.toString,
+        accuracy.toString, fMeasure.toString), filler).mkString("\n", "\n", "\n")
 
   }
-  val total: Int = tp + fp + tn + fn
 
   def accuracy: Double = (tp + tn) / (1.0 * total)
 
