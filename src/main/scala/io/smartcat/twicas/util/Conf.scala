@@ -48,6 +48,24 @@ object Conf {
       private lazy val logreg = train.getConfig("log_reg")
     }
 
+    object NaiveBayes {
+      private lazy val nb = train.getConfig("naive_bayes")
+      lazy val smoothings : List[Int] = getIntList(nb.getConfig("smoothing"))
+    }
+
+    object RandomForest {
+      private lazy val rf = train.getConfig("random_forest")
+      lazy val subsetStrategy:String = rf.getString("subset_strategy")
+      lazy val impurity : String = rf.getString("impurity")
+      lazy val numClasses : Int = rf.getInt("num_classes")
+      lazy val seed : Int = rf.getInt("seed")
+      lazy val subsamplingRate : Double = rf.getDouble("subsampling_rate")
+
+      lazy val maxBins : List[Int] = getIntList(rf.getConfig("max_bins"))
+      lazy val maxDepths : List[Int] = getIntList(rf.getConfig("max_depths"))
+      lazy val numTrees : List[Int] = getIntList(rf.getConfig("num_trees"))
+    }
+
   }
 
   object Preprocessing {
