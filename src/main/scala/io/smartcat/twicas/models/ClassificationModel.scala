@@ -10,6 +10,6 @@ abstract class ClassificationModel extends Pipeline {
 
   def classify(df: DataFrame): DataFrame
 
-  def params: Map[String, Double]
+  def params: Map[String, String]
 
 }

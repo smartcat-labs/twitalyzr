@@ -9,10 +9,10 @@ class LogisticRegressionTweet(logisticRegression: LogisticRegressionModel) exten
 
   override def classify(df: DataFrame): DataFrame = logisticRegression.transform(df)
 
-  def params: Map[String, Double] = Map(
-    "threshold" -> logisticRegression.getThreshold,
-    "regularization" -> logisticRegression.getRegParam,
-    "elasticNet" -> logisticRegression.getElasticNetParam
+  def params: Map[String, String] = Map(
+    "threshold" -> logisticRegression.getThreshold.toString,
+    "regularization" -> logisticRegression.getRegParam.toString,
+    "elasticNet" -> logisticRegression.getElasticNetParam.toString
   )
 }
 
