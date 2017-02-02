@@ -30,6 +30,8 @@ object TrainJob extends App {
   val df = rdd.toDF
 
 
+  //TODO
+  /*
   val textCleaner = new TextCleaner(List("text", "userDescription"))
   val tokenizer = FeatureTokenizer.make(List("text", "userDescription"))
   val hashingTF = FeatureHashTF.make(Map("text_t" -> 100, "userDescription_t" -> 100))
@@ -51,5 +53,6 @@ object TrainJob extends App {
   val finalPipeline = new PipelineProcessor(List(textCleaner, tokenizer, hashingTF, idf, assembler, op.head.classificationModel))
 
   PipelineProcessor.saveToFile(modelFile, finalPipeline)
+  */
 
 }
