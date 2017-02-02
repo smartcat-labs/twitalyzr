@@ -1,6 +1,7 @@
 package io.smartcat.twicas.models
 
 import io.smartcat.twicas.summary.{ModelSummary, ParameterOptimization}
+import io.smartcat.twicas.util.Conf
 import org.apache.spark.ml.classification.{NaiveBayes, NaiveBayesModel}
 import org.apache.spark.sql.DataFrame
 
@@ -19,10 +20,10 @@ class NaiveBayesTweet(naiveBayesModel: NaiveBayesModel) extends ClassificationMo
 }
 
 object NaiveBayesTweet extends Serializable {
-  val featureColumn = "features"
-  val labelColumn = "label"
-  val predictionColumn = "prediction"
-  val probabilityColumn = "probability"
+  val featureColumn : String = Conf.Train.featuresColumn
+  val labelColumn : String = Conf.Train.labelColumn
+  val predictionColumn : String = Conf.Train.predictionColumn
+  val probabilityColumn : String = Conf.Train.probabilityColumn
 
   /**
     * Runs training on different model made from combinations of parameters
