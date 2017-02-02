@@ -65,7 +65,7 @@ object Conf {
 
     }
 
-    object TF {
+    object TermFrequency {
       lazy val text: List[Int] = getIntList(tf.getConfig("text"))
       lazy val userDescription: List[Int] = getIntList(tf.getConfig("user_description"))
       lazy val hashtags: List[Int] = getIntList(tf.getConfig("hashtags"))
@@ -73,7 +73,7 @@ object Conf {
 
     }
 
-    object W2V {
+    object Word2Vector {
       lazy val text: List[Int] = getIntList(w2v.getConfig("text"))
       lazy val userDescription: List[Int] = getIntList(w2v.getConfig("user_description"))
       private lazy val w2v = preprocessing.getConfig("w2v")
