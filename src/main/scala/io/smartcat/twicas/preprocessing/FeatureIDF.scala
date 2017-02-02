@@ -1,6 +1,7 @@
 package io.smartcat.twicas.preprocessing
 
 import io.smartcat.twicas.pipeline.Pipeline
+import io.smartcat.twicas.util.Conf
 import org.apache.spark.ml.feature.{IDF, IDFModel}
 import org.apache.spark.sql.DataFrame
 
@@ -9,7 +10,7 @@ class FeatureIDF(idfModels: List[IDFModel]) extends Pipeline {
 }
 
 object FeatureIDF extends Serializable {
-  val afterIDF = "_idf"
+  val afterIDF : String = Conf.Preprocessing.Sufix.afterIDF
 
 
   def make(df: DataFrame, columnNames: List[String]): FeatureIDF = {
