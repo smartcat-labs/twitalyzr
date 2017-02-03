@@ -1,6 +1,7 @@
 package io.smartcat.twicas.models
 
 import io.smartcat.twicas.summary.{ModelSummary, ParameterOptimization}
+import io.smartcat.twicas.util.Conf
 import org.apache.spark.ml.classification.{RandomForestClassificationModel, RandomForestClassifier}
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions.udf
@@ -24,17 +25,20 @@ class RandomForestTweet(randomForestModel: RandomForestClassificationModel) exte
 }
 
 object RandomForestTweet extends Serializable {
-  val subsetStrategy = "sqrt"
-  val impurity = "gini"
-  val numClasses = 2
-  val seed = 20
-  val subsamplingRate = 0.8
+
+  val subsetStrategy : String = Conf.Train.RandomForest.subsetStrategy
+  val impurity : String = Conf.Train.RandomForest.impurity
+  val numClasses : Int = Conf.Train.RandomForest.numClasses
+  val seed : Int = Conf.Train.RandomForest.seed
+  val subsamplingRate : Double = Conf.Train.RandomForest.subsamplingRate
 
 
-  val featureColumn = "features"
-  val labelColumn = "label"
-  val predictionColumn = "prediction"
-  val probabilityColumn = "probability"
+
+  val featureColumn : String = Conf.Train.featuresColumn
+  val labelColumn : String = Conf.Train.labelColumn
+  val predictionColumn : String = Conf.Train.predictionColumn
+  val probabilityColumn : String = Conf.Train.probabilityColumn
+
 
 
   /**
