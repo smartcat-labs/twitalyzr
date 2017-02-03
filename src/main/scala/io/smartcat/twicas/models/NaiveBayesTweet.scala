@@ -4,17 +4,17 @@ import io.smartcat.twicas.summary.{ModelSummary, ParameterOptimization}
 import org.apache.spark.ml.classification.{NaiveBayes, NaiveBayesModel}
 import org.apache.spark.sql.DataFrame
 
-class NaiveBayesTweet(naiveBayesModel: NaiveBayesModel) extends ClassificationModel{
+class NaiveBayesTweet(naiveBayesModel: NaiveBayesModel) extends ClassificationModel {
   override val name: String = "Naive Bayes"
+  private val stringFormat = "Logistic Regression\nThreshold : %s\nSmoothing : %s\nModel Type : %s\n"
 
   override def classify(df: DataFrame): DataFrame = naiveBayesModel.transform(df)
 
-  override def params: Map[String, String] = {
-    Map(
-      "modelType" -> naiveBayesModel.getModelType,
-      "smoothing" -> naiveBayesModel.getSmoothing.toString,
-      "threshold" -> naiveBayesModel.getThresholds(0).toString
-    )
+  override def toString: String = {
+    "\n" + "*" * 10 + "\nMeasurement\n" +
+      stringFormat.format(naiveBayesModel.getThresholds(0).toString,
+        naiveBayesModel.getSmoothing.toString,
+        naiveBayesModel.getModelType) + "\n" + "*" * 10
   }
 }
 
@@ -26,10 +26,11 @@ object NaiveBayesTweet extends Serializable {
 
   /**
     * Runs training on different model made from combinations of parameters
-    * @param trainSet DataFrame of train set
+    *
+    * @param trainSet      DataFrame of train set
     * @param validationSet DataFrame of validation set
-    * @param smoothings List of smoothing parameters
-    * @param thresholds List of threshold parameters
+    * @param smoothings    List of smoothing parameters
+    * @param thresholds    List of threshold parameters
     * @return ParameterOptimization which contains trained models and their summary on validation set
     */
   def makeModels(trainSet: DataFrame, validationSet: DataFrame,
@@ -47,7 +48,8 @@ object NaiveBayesTweet extends Serializable {
 
   /**
     * This method calls Spark's NaiveBayes training algorithm
-    * @param df Train data set
+    *
+    * @param df        Train data set
     * @param smoothing parameter for training
     * @param threshold parameter for training
     * @return NaiveBayesTweet trained model

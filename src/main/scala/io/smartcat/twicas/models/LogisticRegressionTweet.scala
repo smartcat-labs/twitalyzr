@@ -6,14 +6,16 @@ import org.apache.spark.sql.DataFrame
 
 class LogisticRegressionTweet(logisticRegression: LogisticRegressionModel) extends ClassificationModel {
   val name: String = "Logistic Regression"
+ private val stringFormat = "Logistic Regression\nThreshold : %s\nRegularization : %s\nElastic Net : %s\n"
 
   override def classify(df: DataFrame): DataFrame = logisticRegression.transform(df)
 
-  def params: Map[String, String] = Map(
-    "threshold" -> logisticRegression.getThreshold.toString,
-    "regularization" -> logisticRegression.getRegParam.toString,
-    "elasticNet" -> logisticRegression.getElasticNetParam.toString
-  )
+  override def toString: String = {
+    "\n" + "*" * 10 + "\nMeasurement\n" +
+      stringFormat.format(logisticRegression.getThreshold.toString,
+        logisticRegression.getRegParam.toString,
+        logisticRegression.getElasticNetParam.toString) + "\n" + "*" * 10
+  }
 }
 
 object LogisticRegressionTweet extends Serializable {
