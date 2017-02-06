@@ -10,7 +10,7 @@ case class Tweet(id: String, text: String, favoriteCount: Long,
 object Tweet extends Serializable {
 
   def makeStream(status: Status): Tweet = {
-    val hashtags = status.getHashtagEntities.map(entity => entity.getText)
+    val hashtags = status.getHashtagEntities.map(entity => entity.getText.toLowerCase)
     val urls = status.getURLEntities.map(entity => entity.getText)
     Tweet(status.getId.toString, status.getText, status.getFavoriteCount, hashtags, urls, status.getRetweetCount,
       status.getUser.getFollowersCount, status.getUser.getFriendsCount, status.getUser.getDescription, -1)
@@ -22,7 +22,7 @@ object Tweet extends Serializable {
     val favoriteCount = row.getAs[Long]("favorite_count")
     val entities = row.getAs[Row]("entities")
     val hashtags: Array[String] = {
-      entities.getSeq[Row](entities.fieldIndex("hashtags")).map { el: Row => el.getAs[String]("text") }.toArray
+      entities.getSeq[Row](entities.fieldIndex("hashtags")).map { el: Row => el.getAs[String]("text").toLowerCase }.toArray
     }
     val urls: Array[String] = {
       entities.getSeq[Row](entities.fieldIndex("urls")).map { el: Row => el.getAs[String]("url") }.toArray
