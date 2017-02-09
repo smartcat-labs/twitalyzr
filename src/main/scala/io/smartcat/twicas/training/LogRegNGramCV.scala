@@ -78,8 +78,6 @@ object LogRegNGramCV {
       parameters(3), parameters(4), parameters(5), parameters(6))
     )
 
-    println("\n\nBESTIES"+besties)
-
     val bestOne = besties.maxBy { case (_, ms) => ms.fMeasure }
 
     new PipelineProcessor(bestOne._1.pipelines ++ List(bestOne._2.classificationModel))

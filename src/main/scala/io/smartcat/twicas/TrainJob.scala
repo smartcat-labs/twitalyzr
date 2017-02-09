@@ -1,5 +1,8 @@
 package io.smartcat.twicas
 
+import io.smartcat.twicas.models.ClassificationModel
+import io.smartcat.twicas.pipeline.PipelineProcessor
+import io.smartcat.twicas.summary.ModelSummary
 import io.smartcat.twicas.training.LogRegNGramCV
 import io.smartcat.twicas.tweet.DatasetLoader
 import io.smartcat.twicas.util.Conf
