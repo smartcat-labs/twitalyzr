@@ -22,8 +22,6 @@ object TrainJob extends App {
     "size" -> Conf.Preprocessing.NGram.userDescriptionVectorLength
   )
 
-  df.show(2)
-
   val model = LogRegNGramCV.trainAndReport(df, Conf.Preprocessing.CountVectorizer.text,
     Conf.Preprocessing.CountVectorizer.userDescription, textNGram, userNGram, Conf.Preprocessing.CountVectorizer.hashtags,
     Conf.Train.thresholds, Conf.Train.LogReg.regParams, Conf.Train.LogReg.elasticNet)
