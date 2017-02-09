@@ -11,7 +11,7 @@ class FeatureAssembler(assembler: VectorAssembler) extends Pipeline {
 
 object FeatureAssembler extends Serializable {
 
-  def make(columns: List[String]): FeatureAssembler =
-    new FeatureAssembler(new VectorAssembler().setInputCols(columns.toArray).setOutputCol("features"))
+  def make(columns: List[String], outputColumn: String): FeatureAssembler =
+    new FeatureAssembler(new VectorAssembler().setInputCols(columns.toArray).setOutputCol(outputColumn))
 
 }

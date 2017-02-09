@@ -1,6 +1,7 @@
 package io.smartcat.twicas.preprocessing
 
 import io.smartcat.twicas.pipeline.Pipeline
+import io.smartcat.twicas.util.Conf
 import org.apache.spark.ml.feature.RegexTokenizer
 import org.apache.spark.sql.DataFrame
 
@@ -11,7 +12,7 @@ class FeatureTokenizer(regexpTokenizers: List[RegexTokenizer]) extends Pipeline 
 }
 
 object FeatureTokenizer extends Serializable {
-  val nameModification = "_t"
+  val nameModification : String = Conf.Preprocessing.Sufix.afterTokenizer
 
   def make(columnsNames: List[String]): FeatureTokenizer = {
     new FeatureTokenizer(columnsNames.map(

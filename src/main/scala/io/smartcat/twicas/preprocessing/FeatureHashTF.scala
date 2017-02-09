@@ -1,6 +1,7 @@
 package io.smartcat.twicas.preprocessing
 
 import io.smartcat.twicas.pipeline.Pipeline
+import io.smartcat.twicas.util.Conf
 import org.apache.spark.ml.feature.HashingTF
 import org.apache.spark.sql.DataFrame
 
@@ -9,7 +10,7 @@ class FeatureHashTF(hashingModels: List[HashingTF]) extends Pipeline {
 }
 
 object FeatureHashTF extends Serializable {
-  val afterHashing = "_tf"
+  val afterHashing : String = Conf.Preprocessing.Sufix.afterTF
 
   def make(columnNamesFeatureNum: Map[String, Int]): FeatureHashTF = {
     new FeatureHashTF(columnNamesFeatureNum.keySet.map(column => {

@@ -79,6 +79,7 @@ object Conf {
       lazy val afterIDF: String = sufixes.getString("after_idf")
       lazy val afterW2V: String = sufixes.getString("after_w2v")
       lazy val afterNGram: String = sufixes.getString("after_ngram")
+      lazy val afterCountVectorizer: String = sufixes.getString("after_count_vectorizer")
       private lazy val sufixes = preprocessing.getConfig("sufixes")
 
     }
@@ -103,6 +104,15 @@ object Conf {
       lazy val text_tf: List[Int] = getIntList(ngram.getConfig("text").getConfig("tf"))
       lazy val userDescription_tf: List[Int] = getIntList(ngram.getConfig("user_description").getConfig("tf"))
       private lazy val ngram = preprocessing.getConfig("ngram")
+    }
+
+    object CountVectorizer {
+      lazy val minDocumentFrequency: Int = cv.getInt("min_doc_freq")
+      lazy val minTermFrequency: Int = cv.getInt("min_term_freq")
+      lazy val text: List[Int] = getIntList(cv.getConfig("text"))
+      lazy val userDescription: List[Int] = getIntList(cv.getConfig("user_description"))
+      lazy val hashtags: List[Int] = getIntList(cv.getConfig("hashtags"))
+      private lazy val cv = preprocessing.getConfig("count_vectorizer")
     }
 
   }
