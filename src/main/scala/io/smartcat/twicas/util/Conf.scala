@@ -13,20 +13,18 @@ object Conf {
   private lazy val root = config.getConfig("twicas")
   private val config = ConfigFactory.load()
 
-  private def getIntList(config: Config): List[Int] = {
-    val manual = config.getIntList("manual").asScala
-    if (manual.isEmpty) {
-      (config.getInt("from") to config.getInt("to") by config.getInt("by")).toList
-    } else
-      manual.map(x => x.toInt).toList
+  private def getIntList(conf: Config): List[Int] = {
+    if (conf.hasPath("manual"))
+      conf.getIntList("manual").asScala.map(_.toInt).toList
+    else
+      (conf.getInt("from") to conf.getInt("to") by conf.getInt("by")).toList
   }
 
   private def getDoubleList(conf: Config): List[Double] = {
-    val manual = config.getDoubleList("manual").asScala
-    if (manual.isEmpty) {
-      (config.getDouble("from") to config.getDouble("to") by config.getDouble("by")).toList
-    } else
-      manual.map(x => x.toDouble).toList
+    if (conf.hasPath("manual"))
+      conf.getDoubleList("manual").asScala.map(_.toDouble).toList
+    else
+      (conf.getDouble("from") to conf.getDouble("to") by conf.getDouble("by")).toList
   }
 
   object Train {
@@ -49,21 +47,20 @@ object Conf {
     }
 
     object NaiveBayes {
+      lazy val smoothings: List[Int] = getIntList(nb.getConfig("smoothing"))
       private lazy val nb = train.getConfig("naive_bayes")
-      lazy val smoothings : List[Int] = getIntList(nb.getConfig("smoothing"))
     }
 
     object RandomForest {
+      lazy val subsetStrategy: String = rf.getString("subset_strategy")
+      lazy val impurity: String = rf.getString("impurity")
+      lazy val numClasses: Int = rf.getInt("num_classes")
+      lazy val seed: Int = rf.getInt("seed")
+      lazy val subsamplingRate: Double = rf.getDouble("subsampling_rate")
+      lazy val maxBins: List[Int] = getIntList(rf.getConfig("max_bins"))
+      lazy val maxDepths: List[Int] = getIntList(rf.getConfig("max_depths"))
+      lazy val numTrees: List[Int] = getIntList(rf.getConfig("num_trees"))
       private lazy val rf = train.getConfig("random_forest")
-      lazy val subsetStrategy:String = rf.getString("subset_strategy")
-      lazy val impurity : String = rf.getString("impurity")
-      lazy val numClasses : Int = rf.getInt("num_classes")
-      lazy val seed : Int = rf.getInt("seed")
-      lazy val subsamplingRate : Double = rf.getDouble("subsampling_rate")
-
-      lazy val maxBins : List[Int] = getIntList(rf.getConfig("max_bins"))
-      lazy val maxDepths : List[Int] = getIntList(rf.getConfig("max_depths"))
-      lazy val numTrees : List[Int] = getIntList(rf.getConfig("num_trees"))
     }
 
   }
@@ -101,8 +98,8 @@ object Conf {
     object NGram {
       lazy val text: List[Int] = getIntList(ngram.getConfig("text"))
       lazy val userDescription: List[Int] = getIntList(ngram.getConfig("user_description"))
-      lazy val text_tf: List[Int] = getIntList(ngram.getConfig("text").getConfig("tf"))
-      lazy val userDescription_tf: List[Int] = getIntList(ngram.getConfig("user_description").getConfig("tf"))
+      lazy val textVectorLength: List[Int] = getIntList(ngram.getConfig("text").getConfig("tf"))
+      lazy val userDescriptionVectorLength: List[Int] = getIntList(ngram.getConfig("user_description").getConfig("tf"))
       private lazy val ngram = preprocessing.getConfig("ngram")
     }
 
