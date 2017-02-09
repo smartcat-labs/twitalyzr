@@ -19,11 +19,23 @@ case class ModelSummary(tp: Int, fp: Int, tn: Int, fn: Int, classificationModel:
 
   def accuracy: Double = (tp + tn) / (1.0 * total)
 
-  def fMeasure: Double = 2 * (precision + recall) / (1.0 * (precision + recall))
+  def fMeasure: Double = 2 * tp / (2.0 * tp + fp + fn)
 
+  //positive predictive value
   def precision: Double = tp / (1.0 * (tp + fp))
 
+  //true positive rate
   def recall: Double = tp / (1.0 * (tp + fn))
+
+  //negative predictive value
+  def negativePredictiveValue = tn / (1.0 * (tn + fn))
+
+  //false positive rate
+  def falsePositiveRate = 1 - trueNegativeRate
+
+  //true negative rate
+  def trueNegativeRate = tn / (1.0 * (fp + tn))
+
 
 }
 
@@ -40,11 +52,12 @@ object ModelSummary extends Serializable {
 
 
     val tp = converted.filter((converted(label) === converted(prediction)) && (converted(prediction) === 1)).count.toInt
-    val fp = converted.filter(not(converted(label) === converted(prediction)) && (converted(prediction) === 1)).count.toInt
-    val tn = converted.filter((converted(label) === converted(prediction)) && (converted(prediction) === 0)).count.toInt
-    val fn = converted.filter(not(converted(label) === converted(prediction)) && (converted(prediction) === 0)).count.toInt
+    val fp = converted.filter(not(converted(label) === converted(prediction)) && (converted(prediction) === 1))
 
-    new ModelSummary(tp, fp, tn, fn, classificationModel)
+    val tn = converted.filter((converted(label) === converted(prediction)) && (converted(prediction) === 0)).count.toInt
+    val fn = converted.filter(not(converted(label) === converted(prediction)) && (converted(prediction) === 0)) //.count.toInt
+
+    new ModelSummary(tp, fp.count.toInt, tn, fn.count.toInt, classificationModel)
   }
 
 }

@@ -8,4 +8,8 @@ case class ParameterOptimization(models: List[ModelSummary]) {
     models map (_.toString) mkString("\n", "\n", "\n")
   }
 
+  def report(measure: (ModelSummary => Double)): String = {
+    models.sortBy(measure).reverse.map(_.toString).mkString("\n", "\n", "\n")
+  }
+
 }
