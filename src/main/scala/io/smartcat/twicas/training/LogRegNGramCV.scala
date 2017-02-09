@@ -72,12 +72,22 @@ object LogRegNGramCV {
     }
 
 
+    println(text)
+    println(user)
+    println(nGramText)
+    println(nGramUser)
+    println(hashtags)
+    println(regParams)
+    println(elasticParams)
+
     val parametersPreproc = models.generator(List(text, user, hashtags,
       nGramText("ngram"), nGramText("size"), nGramUser("ngram"), nGramUser("size")))
 
     val besties = parametersPreproc.map(parameters => getBestAndReport(parameters.head, parameters(1), parameters(2),
       parameters(3), parameters(4), parameters(5), parameters(6))
     )
+
+    println("\n\nBESTIES"+besties)
 
     val bestOne = besties.maxBy { case (_, ms) => ms.fMeasure }
 
