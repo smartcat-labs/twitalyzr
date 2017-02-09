@@ -31,4 +31,5 @@ object FeatureCountVectorizer extends Serializable {
     new FeatureCountVectorizer(model.toList)
 
   }
+}
 
