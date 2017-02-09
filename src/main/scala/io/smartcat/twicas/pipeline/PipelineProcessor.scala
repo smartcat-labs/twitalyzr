@@ -5,7 +5,7 @@ import java.io._
 import org.apache.spark.sql.DataFrame
 
 
-class PipelineProcessor(pipelines: List[Pipeline]) extends Serializable {
+case class PipelineProcessor(pipelines: List[Pipeline]) extends Serializable {
 
   def processAll(df: DataFrame): DataFrame = pipelines.foldLeft(df)((dff, pipeline) => pipeline.process(dff))
 
