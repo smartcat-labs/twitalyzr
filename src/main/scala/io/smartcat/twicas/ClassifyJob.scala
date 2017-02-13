@@ -1,7 +1,9 @@
 package io.smartcat.twicas
 
-import io.smartcat.twicas.pipeline.PipelineProcessor
+
 import io.smartcat.twicas.tweet.Tweet
+import io.smartcat.twicas.util.Conf
+import org.apache.spark.ml.PipelineModel
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.streaming.twitter.TwitterUtils
 import org.apache.spark.streaming.{Seconds, StreamingContext}
@@ -11,25 +13,15 @@ object ClassifyJob extends App {
     .appName("twitter_classifier")
     .getOrCreate()
 
-  val token = ""
-  val tokenSecret = ""
-  val consumerKey = ""
-  val consumerSecret = ""
+  System.setProperty("twitter4j.oauth.consumerKey", Conf.Stream.consumerKey)
+  System.setProperty("twitter4j.oauth.consumerSecret", Conf.Stream.consumerSecret)
+  System.setProperty("twitter4j.oauth.accessToken", Conf.Stream.token)
+  System.setProperty("twitter4j.oauth.accessTokenSecret", Conf.Stream.tokenSecret)
 
-  val searchFilter = "#cassandra"
-  val pipelineFile = ""
+  val ssc = new StreamingContext(spark.sparkContext, Seconds(Conf.Stream.interval))
+  val tweetStream = TwitterUtils.createStream(ssc, None, Seq(Conf.Stream.searchFilter))
 
-  val interval = 10
-
-  System.setProperty("twitter4j.oauth.consumerKey", consumerKey)
-  System.setProperty("twitter4j.oauth.consumerSecret", consumerSecret)
-  System.setProperty("twitter4j.oauth.accessToken", token)
-  System.setProperty("twitter4j.oauth.accessTokenSecret", tokenSecret)
-
-  val ssc = new StreamingContext(spark.sparkContext, Seconds(interval))
-  val tweetStream = TwitterUtils.createStream(ssc, None, Seq(searchFilter))
-
-  val pipeline = PipelineProcessor.loadFromFile(pipelineFile)
+  val loadedModel = PipelineModel.load(Conf.modelPath)
 
   import spark.sqlContext.implicits._
 
@@ -37,10 +29,10 @@ object ClassifyJob extends App {
     if (!rdd.isEmpty()) {
       val tweets = rdd.map(Tweet.makeStream)
       val tweetsDF = tweets.toDF
-      val prediction = pipeline.processAll(tweetsDF)
-      /*
-      Filter and save valuable tweets
-       */
+
+      val processedDF = loadedModel.transform(tweetsDF)
+      processedDF.show(5)
+
     }
   })
 
