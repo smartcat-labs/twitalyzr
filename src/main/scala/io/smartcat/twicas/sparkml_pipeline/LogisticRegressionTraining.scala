@@ -118,17 +118,7 @@ object LogisticRegressionTraining extends App {
 
   val bestPipelineModel = cvModel.bestModel.asInstanceOf[PipelineModel]
 
-  val resDF = bestPipelineModel.transform(df)
-
-  resDF.show(3)
-
   bestPipelineModel.write.overwrite().save(Conf.modelPath)
-
-  val loadedModel = PipelineModel.load(Conf.modelPath)
-
-  val newRes = loadedModel.transform(df)
-
-  newRes.show(3)
 
 
 }
