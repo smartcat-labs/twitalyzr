@@ -13,6 +13,8 @@ object ClassifyJob extends App {
     .appName("twitter_classifier")
     .getOrCreate()
 
+  spark.conf.set("spark.streaming.stopGracefullyOnShutdown","true")
+
   System.setProperty("twitter4j.oauth.consumerKey", Conf.Stream.consumerKey)
   System.setProperty("twitter4j.oauth.consumerSecret", Conf.Stream.consumerSecret)
   System.setProperty("twitter4j.oauth.accessToken", Conf.Stream.token)
@@ -29,12 +31,16 @@ object ClassifyJob extends App {
     if (!rdd.isEmpty()) {
       val tweets = rdd.map(Tweet.makeStream)
       val tweetsDF = tweets.toDF
-
       val processedDF = loadedModel.transform(tweetsDF)
-      processedDF.show(5)
-
+      //do something with results
+      processedDF.select("text").show(3)
     }
   })
+
+  sys.ShutdownHookThread {
+    ssc.stop(true, true)
+    tweetStream.stop()
+  }
 
   ssc.start()
   ssc.awaitTermination()
