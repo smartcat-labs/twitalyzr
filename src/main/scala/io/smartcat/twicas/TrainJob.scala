@@ -1,8 +1,6 @@
 package io.smartcat.twicas
 
-import io.smartcat.twicas.models.ClassificationModel
 import io.smartcat.twicas.pipeline.PipelineProcessor
-import io.smartcat.twicas.summary.ModelSummary
 import io.smartcat.twicas.training.LogRegNGramCV
 import io.smartcat.twicas.tweet.DatasetLoader
 import io.smartcat.twicas.util.Conf
@@ -28,5 +26,8 @@ object TrainJob extends App {
   val model = LogRegNGramCV.trainAndReport(df, Conf.Preprocessing.CountVectorizer.text,
     Conf.Preprocessing.CountVectorizer.userDescription, textNGram, userNGram, Conf.Preprocessing.CountVectorizer.hashtags,
     Conf.Train.thresholds, Conf.Train.LogReg.regParams, Conf.Train.LogReg.elasticNet)
+
+  PipelineProcessor.saveToFile(Conf.modelPath, model)
+
 
 }

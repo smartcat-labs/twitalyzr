@@ -10,6 +10,8 @@ object Conf {
   lazy val hashtagsColumn: String = root.getString("hashtags_column")
   lazy val trainJob: String = root.getString("train_job_name")
   lazy val classifyJob: String = root.getString("classify_job_name")
+  lazy val modelPath: String = root.getString("model_path")
+
   private lazy val root = config.getConfig("twicas")
   private val config = ConfigFactory.load()
 
@@ -37,6 +39,7 @@ object Conf {
     lazy val labelColumn: String = train.getString("label_column")
     lazy val predictionColumn: String = train.getString("prediction_column")
     lazy val probabilityColumn: String = train.getString("probability_column")
+    lazy val numFold:Int = train.getInt("num_fold")
 
     private lazy val train = root.getConfig("train")
 
@@ -77,6 +80,8 @@ object Conf {
       lazy val afterW2V: String = sufixes.getString("after_w2v")
       lazy val afterNGram: String = sufixes.getString("after_ngram")
       lazy val afterCountVectorizer: String = sufixes.getString("after_count_vectorizer")
+      lazy val afterClean:String = sufixes.getString("after_clean")
+
       private lazy val sufixes = preprocessing.getConfig("sufixes")
 
     }
@@ -111,6 +116,19 @@ object Conf {
       lazy val hashtags: List[Int] = getIntList(cv.getConfig("hashtags"))
       private lazy val cv = preprocessing.getConfig("count_vectorizer")
     }
+
+  }
+
+  object Stream{
+
+    private lazy val stream = root.getConfig("twitter_stream")
+
+    lazy val token:String = stream.getString("token")
+    lazy val tokenSecret:String = stream.getString("tokenSecret")
+    lazy val consumerKey:String = stream.getString("consumerKey")
+    lazy val consumerSecret:String = stream.getString("consumerSecret")
+    lazy val searchFilter:String = stream.getString("search_filter")
+    lazy val interval:Int = stream.getInt("interval")
 
   }
 
