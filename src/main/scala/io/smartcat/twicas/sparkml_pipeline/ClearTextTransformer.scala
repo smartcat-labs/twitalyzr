@@ -15,10 +15,14 @@ class ClearTextTransformer(override val uid: String) extends UnaryTransformer[St
   }
 
   override protected def createTransformFunc: (String) => String = {
-    _.toLowerCase.trim
-      .replaceAll("""-|\'|RT|:|\.|@[^\s]+|http[^\s]+|([^\x00-\x7F])""", "")
-      .replaceAll("""[^a-zA-Z]""", " ")
-      .replaceAll("""\s+""", " ")
+
+    Option(_) match {
+      case None    => ""
+      case Some(s) => s.toLowerCase.trim
+        .replaceAll("""-|\'|RT|:|\.|@[^\s]+|http[^\s]+|([^\x00-\x7F])""", "")
+        .replaceAll("""[^a-zA-Z]""", " ")
+        .replaceAll("""\s+""", " ")
+    }
   }
 
 }
