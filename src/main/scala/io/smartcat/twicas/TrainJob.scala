@@ -29,9 +29,5 @@ object TrainJob extends App {
 
   PipelineProcessor.saveToFile(Conf.modelPath, model)
 
-  val loadedPipeline = PipelineProcessor.loadFromFile(Conf.modelPath)
-
-  loadedPipeline.processAll(df).show(5)
-
 
 }
