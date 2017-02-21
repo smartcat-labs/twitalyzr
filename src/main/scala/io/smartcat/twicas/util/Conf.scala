@@ -8,6 +8,7 @@ object Conf {
   lazy val textColumn: String = root.getString("text_column")
   lazy val userDescriptionColumn: String = root.getString("user_description_column")
   lazy val hashtagsColumn: String = root.getString("hashtags_column")
+  lazy val idColumn: String = root.getString("id_column")
   lazy val trainJob: String = root.getString("train_job_name")
   lazy val classifyJob: String = root.getString("classify_job_name")
   lazy val modelPath: String = root.getString("model_path")
@@ -29,6 +30,13 @@ object Conf {
       (conf.getDouble("from") to conf.getDouble("to") by conf.getDouble("by")).toList
   }
 
+  object SendResults {
+    lazy val maxTweets: Int = send.getInt("max_tweets")
+    lazy val classes: List[String] = send.getStringList("classes").asScala.toList
+    lazy val host: String = send.getString("host")
+    private lazy val send = root.getConfig("send_results")
+  }
+
   object Train {
     lazy val dataset: String = train.getString("dataset_file")
     lazy val reportDir: String = train.getString("report_base_dir")
@@ -39,7 +47,7 @@ object Conf {
     lazy val labelColumn: String = train.getString("label_column")
     lazy val predictionColumn: String = train.getString("prediction_column")
     lazy val probabilityColumn: String = train.getString("probability_column")
-    lazy val numFold:Int = train.getInt("num_fold")
+    lazy val numFold: Int = train.getInt("num_fold")
 
     private lazy val train = root.getConfig("train")
 
@@ -80,7 +88,7 @@ object Conf {
       lazy val afterW2V: String = sufixes.getString("after_w2v")
       lazy val afterNGram: String = sufixes.getString("after_ngram")
       lazy val afterCountVectorizer: String = sufixes.getString("after_count_vectorizer")
-      lazy val afterClean:String = sufixes.getString("after_clean")
+      lazy val afterClean: String = sufixes.getString("after_clean")
 
       private lazy val sufixes = preprocessing.getConfig("sufixes")
 
@@ -119,16 +127,15 @@ object Conf {
 
   }
 
-  object Stream{
+  object Stream {
 
+    lazy val token: String = stream.getString("token")
+    lazy val tokenSecret: String = stream.getString("tokenSecret")
+    lazy val consumerKey: String = stream.getString("consumerKey")
+    lazy val consumerSecret: String = stream.getString("consumerSecret")
+    lazy val searchFilter: String = stream.getString("search_filter")
+    lazy val interval: Int = stream.getInt("interval")
     private lazy val stream = root.getConfig("twitter_stream")
-
-    lazy val token:String = stream.getString("token")
-    lazy val tokenSecret:String = stream.getString("tokenSecret")
-    lazy val consumerKey:String = stream.getString("consumerKey")
-    lazy val consumerSecret:String = stream.getString("consumerSecret")
-    lazy val searchFilter:String = stream.getString("search_filter")
-    lazy val interval:Int = stream.getInt("interval")
 
   }
 
