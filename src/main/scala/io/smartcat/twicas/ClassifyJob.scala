@@ -7,6 +7,7 @@ import org.apache.spark.ml.PipelineModel
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.streaming.twitter.TwitterUtils
 import org.apache.spark.streaming.{Seconds, StreamingContext}
+import io.smartcat.twicas.rest.TweetNotification
 
 object ClassifyJob extends App {
   val spark = SparkSession.builder()
@@ -32,8 +33,8 @@ object ClassifyJob extends App {
       val tweets = rdd.map(Tweet.makeStream)
       val tweetsDF = tweets.toDF
       val processedDF = loadedModel.transform(tweetsDF)
-      //do something with results
-      processedDF.select("text").show(3)
+
+      TweetNotification.send(processedDF)
     }
   })
 
