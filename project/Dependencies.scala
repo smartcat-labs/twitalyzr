@@ -9,7 +9,9 @@ object Dependencies {
     "com.typesafe" % "config" % "1.3.1",
     "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
     "log4j" % "log4j" % "1.2.17" % Provided,
-    "org.apache.bahir" % "spark-streaming-twitter_2.11" % "2.0.1"
+    "org.apache.bahir" % "spark-streaming-twitter_2.11" % "2.0.1",
+    "com.google.code.gson" % "gson" % "1.7.1",
+    "org.apache.httpcomponents" % "httpclient" % "4.5.3"
   )
 
   val algoDeps = commons ++ Seq(
