@@ -34,7 +34,7 @@ object ClassifyJob extends App {
       val tweetsDF = tweets.toDF
       val processedDF = loadedModel.transform(tweetsDF)
 
-      TweetNotification.send(processedDF)
+      TweetNotification.filterAndSend(processedDF)
     }
   })
 
