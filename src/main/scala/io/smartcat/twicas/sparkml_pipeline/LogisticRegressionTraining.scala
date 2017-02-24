@@ -1,5 +1,7 @@
 package io.smartcat.twicas.sparkml_pipeline
 
+import java.io.PrintWriter
+
 import io.smartcat.twicas.tweet.DatasetLoader
 import io.smartcat.twicas.util.Conf
 import org.apache.spark.ml.classification.LogisticRegression
@@ -14,7 +16,12 @@ object LogisticRegressionTraining extends App {
     .appName("twitter_trainer")
     .getOrCreate()
 
-  val df = DatasetLoader.load(Conf.Train.dataset, spark)
+  val df = DatasetLoader.load(Conf.Train.dataset, spark).randomSplit(Conf.Train.trainSplit, Conf.Train.splitSeed)
+  val trainDF = df(0)
+  val testDF = df(1)
+
+  trainDF.cache().count
+  testDF.cache().count
 
   val textCleaner = new ClearTextTransformer()
     .setInputCol(Conf.textColumn)
@@ -114,11 +121,13 @@ object LogisticRegressionTraining extends App {
     .setNumFolds(Conf.Train.numFold)
     .setEstimatorParamMaps(paramMaps)
 
-  val cvModel = cv.fit(df)
+  val cvModel = cv.fit(trainDF)
 
   val bestPipelineModel = cvModel.bestModel.asInstanceOf[PipelineModel]
 
   bestPipelineModel.write.overwrite().save(Conf.modelPath)
+
+  new PrintWriter(Conf.Train.reportDir+"report.txt") { write(PipelineSummary.validate(testDF, bestPipelineModel).toString); close }
 
 
 }
