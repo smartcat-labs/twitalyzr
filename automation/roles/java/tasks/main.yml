@@ -1,0 +1,8 @@
+---
+  - name: Check java version
+    shell: java -version 2>&1 | grep version | awk '{print $3}' | sed 's/"//g'
+    register: check_java_version
+
+  - name: Install java
+    include: installer.yml
+    when : 'check_java_version.stdout != "{{ java_binary }}"'

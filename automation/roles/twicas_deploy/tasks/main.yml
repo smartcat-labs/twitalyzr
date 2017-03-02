@@ -1,0 +1,18 @@
+---
+
+- name: Creates Twicas directory
+  file:
+    path: "{{twicas_dir}}"
+    state: directory
+    mode: u+rwx
+
+- name: Copy Twicas JAR
+  copy:
+      src: "{{twicas_src_jar}}"
+      dest: "{{twicas_dir}}/{{twicas_jar_name}}"
+
+#SLOW
+- name: Copy Twicas Model
+  copy:
+      src: "{{twicas_src_model}}"
+      dest: "{{twicas_dir}}/"

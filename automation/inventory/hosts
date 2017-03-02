@@ -1,0 +1,7 @@
+[tag_Name_spark_master]
+
+[spark-master:children]
+tag_Name_spark_master
+
+[spark-slaves:children]
+tag_Name_spark_master

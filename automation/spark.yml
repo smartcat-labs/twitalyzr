@@ -1,0 +1,39 @@
+---
+- name: Setup Spark master
+  hosts: localhost
+  connection: local
+  roles:
+    - role: aws
+      ec2_key_name: "eu-smartcat"
+      ec2_security_group: "default"
+      ec2_subnet_id: "subnet-9c0af4e6"
+      ec2_image_id: ami-26c43149
+      ec2_instance_type: t2.medium
+      ec2_region: eu-central-1
+      ec2_count: 1
+      ec2_tags:
+        Name: "twicas-spark-master"
+      ec2_group: twicas-spark-master
+
+- name: Install software
+  hosts: twicas-spark-master
+  gather_facts: False
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+  tags:
+      - aws-setup
+      - aws-start
+  roles:
+    - spark
+    - twicas_deploy
+
+  #fail if spark is already started
+  post_tasks:
+    - name: Start master
+      shell: "{{ spark_home }}/sbin/start-master.sh"
+    - name: Start slaves
+      shell: "{{ spark_home }}/sbin/start-slave.sh {{ spark_conf_vars.spark_master_ip }}"
+    - name: Start Twicas
+      shell: "nohup {{ spark_home}}/bin/spark-submit --class io.smartcat.twicas.ClassifyJob --master spark://{{spark_conf_vars.spark_master_ip}} {{twicas_jar}} \"{{twicas_model_dir}}\" &"
+

@@ -1,0 +1,5 @@
+---
+twicas_src_jar: "{{ lookup('env', 'TWICAS_SRC_JAR') }}/{{twicas_jar_name}}"
+
+twicas_src_model: "{{ lookup('env', 'TWICAS_SRC_MODEL') }}/{{twicas_model_name}}"
+
