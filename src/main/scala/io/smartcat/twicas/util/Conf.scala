@@ -11,7 +11,6 @@ object Conf {
   lazy val idColumn: String = root.getString("id_column")
   lazy val trainJob: String = root.getString("train_job_name")
   lazy val classifyJob: String = root.getString("classify_job_name")
-  lazy val modelPath: String = root.getString("model_path")
 
   private lazy val root = config.getConfig("twicas")
   private val config = ConfigFactory.load()
@@ -32,7 +31,6 @@ object Conf {
 
   object SendResults {
     lazy val maxTweets: Int = send.getInt("max_tweets")
-    lazy val classes: List[String] = send.getStringList("classes").asScala.toList
     lazy val host: String = send.getString("host")
     private lazy val send = root.getConfig("send_results")
   }
