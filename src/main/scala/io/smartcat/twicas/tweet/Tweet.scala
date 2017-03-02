@@ -33,6 +33,7 @@ object Tweet extends Serializable {
     val userDescription = user.getAs[String]("description")
     val userFollowersCount = user.getAs[Long]("followers_count")
     val userFriendsCount = user.getAs[Long]("friends_count")
+    val userID = user.getAs[Long]("id").toString
 
     Tweet(id, tweetText, favoriteCount, hashtags, urls, retweetCount, userFollowersCount, userFriendsCount, userDescription, label)
   }
