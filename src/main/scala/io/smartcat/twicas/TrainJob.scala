@@ -6,28 +6,38 @@ import io.smartcat.twicas.tweet.DatasetLoader
 import io.smartcat.twicas.util.Conf
 import org.apache.spark.sql.SparkSession
 
-object TrainJob extends App {
-  val spark = SparkSession.builder()
-    .appName("twitter_trainer")
-    .getOrCreate()
+object TrainJob {
 
-  val df = DatasetLoader.load(Conf.Train.dataset, spark)
+  def main(args: Array[String]): Unit = {
 
-  val textNGram = Map(
-    "ngram" -> Conf.Preprocessing.NGram.text,
-    "size" -> Conf.Preprocessing.NGram.textVectorLength
-  )
+    if (args.length < 1) {
+      System.err.println("One parameter must be model path")
+      System.exit(1)
+    }
 
-  val userNGram = Map(
-    "ngram" -> Conf.Preprocessing.NGram.userDescription,
-    "size" -> Conf.Preprocessing.NGram.userDescriptionVectorLength
-  )
+    val modelPath = args(0)
 
-  val model = LogRegNGramCV.trainAndReport(df, Conf.Preprocessing.CountVectorizer.text,
-    Conf.Preprocessing.CountVectorizer.userDescription, textNGram, userNGram, Conf.Preprocessing.CountVectorizer.hashtags,
-    Conf.Train.thresholds, Conf.Train.LogReg.regParams, Conf.Train.LogReg.elasticNet)
+    val spark = SparkSession.builder()
+      .appName("twitter_trainer")
+      .getOrCreate()
 
-  PipelineProcessor.saveToFile(Conf.modelPath, model)
+    val df = DatasetLoader.load(Conf.Train.dataset, spark)
 
+    val textNGram = Map(
+      "ngram" -> Conf.Preprocessing.NGram.text,
+      "size" -> Conf.Preprocessing.NGram.textVectorLength
+    )
 
+    val userNGram = Map(
+      "ngram" -> Conf.Preprocessing.NGram.userDescription,
+      "size" -> Conf.Preprocessing.NGram.userDescriptionVectorLength
+    )
+
+    val model = LogRegNGramCV.trainAndReport(df, Conf.Preprocessing.CountVectorizer.text,
+      Conf.Preprocessing.CountVectorizer.userDescription, textNGram, userNGram, Conf.Preprocessing.CountVectorizer.hashtags,
+      Conf.Train.thresholds, Conf.Train.LogReg.regParams, Conf.Train.LogReg.elasticNet)
+
+    PipelineProcessor.saveToFile(modelPath, model)
+
+  }
 }
