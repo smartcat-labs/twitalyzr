@@ -4,8 +4,8 @@ java_version: java8jre
 spark_conf_vars:
   spark_master_ip: '0.0.0.0:7077'
 
-twicas_dir: "/home/ubuntu/twicas"
-twicas_jar_name: "twicas-assembly-0.1-SNAPSHOT.jar"
-twicas_jar: "{{twicas_dir}}/{{twicas_jar_name}}"
-twicas_model_name: "model.dat"
-twicas_model_dir: "{{twicas_dir}}/{{twicas_model_name}}"
+twitalyzr_dir: "/home/ubuntu/twitalyzr"
+twitalyzr_jar_name: "twitalyzr-assembly-0.1-SNAPSHOT.jar"
+twitalyzr_jar: "{{twitalyzr_dir}}/{{twitalyzr_jar_name}}"
+twitalyzr_model_name: "model.dat"
+twitalyzr_model_dir: "{{twitalyzr_dir}}/{{twitalyzr_model_name}}"

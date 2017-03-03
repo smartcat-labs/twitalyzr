@@ -1,0 +1,18 @@
+---
+
+- name: Creates Twitalyzr directory
+  file:
+    path: "{{twitalyzr_dir}}"
+    state: directory
+    mode: u+rwx
+
+- name: Copy Twitalyzr JAR
+  copy:
+      src: "{{twitalyzr_src_jar}}"
+      dest: "{{twitalyzr_dir}}/{{twitalyzr_jar_name}}"
+
+#SLOW
+- name: Copy Twitalyzr Model
+  copy:
+      src: "{{twitalyzr_src_model}}"
+      dest: "{{twitalyzr_dir}}/"
