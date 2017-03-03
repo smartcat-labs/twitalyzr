@@ -11,8 +11,9 @@
       src: "{{twitalyzr_src_jar}}"
       dest: "{{twitalyzr_dir}}/{{twitalyzr_jar_name}}"
 
-#SLOW
 - name: Copy Twitalyzr Model
-  copy:
+  unarchive:
+      copy: yes
       src: "{{twitalyzr_src_model}}"
-      dest: "{{twitalyzr_dir}}/"
+      dest: "{{twitalyzr_dir}}"
+      mode: u+rwx
