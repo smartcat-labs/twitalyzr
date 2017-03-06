@@ -38,6 +38,5 @@
       shell: "nohup {{ spark_home}}/bin/spark-submit --class io.smartcat.twitalyzr.ClassifyJob --master spark://{{spark_conf_vars.spark_master_ip}} --executor-memory 2G --files {{twitalyzr_dir}}/{{twitalyzr_conf_name}} --driver-java-options \"-Dconfig.file={{twitalyzr_dir}}/{{twitalyzr_conf_name}}\" {{twitalyzr_jar}} \"{{twitalyzr_model_dir}}\" &"
 
 
-      #old
-      #shell: "nohup {{ spark_home}}/bin/spark-submit --class io.smartcat.twitalyzr.ClassifyJob --master spark://{{spark_conf_vars.spark_master_ip}} --executor-memory 2G {{twitalyzr_jar}} \"{{twitalyzr_model_dir}}\" &"
+
 
