@@ -1,4 +1,5 @@
 ---
+- include_vars: twitter_api_keys.yml
 
 - name: Creates Twitalyzr directory
   file:
@@ -17,3 +18,8 @@
       src: "{{twitalyzr_src_model}}"
       dest: "{{twitalyzr_dir}}"
       mode: u+rwx
+
+- name: Copy Twitalyzr Configuration
+  template:
+      src: "application.conf.j2"
+      dest: "{{twitalyzr_dir}}/{{twitalyzr_conf_name}}"

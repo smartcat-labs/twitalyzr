@@ -1,0 +1,216 @@
+twitalyzr {
+
+  train_job_name = "train_job"
+  classify_job_name = "classify_name"
+
+
+  twitter_stream = {
+    token = "{{ token }}"
+    tokenSecret = "{{ token_secret }}"
+    consumerKey = "{{ consumer_key }}"
+    consumerSecret = "{{ consumer_secret }}"
+    search_filter = "#cassandra"
+    interval = 60
+
+  }
+
+  train = {
+    features_column = "features"
+    label_column = "label"
+    prediction_column = "prediction"
+    probability_column = "probability"
+
+    dataset_file = "/dataset.json"
+    report_base_dir = "./reports/"
+    train_split = 0.8
+    validation_split = 0.2
+    split_seed = 20
+    num_fold = 8
+
+    threshold = {
+      manual = [0.67]
+      from = 0.5
+      to = 0.85
+      by = 0.05
+    }
+
+    log_reg = {
+      reg_param = {
+        manual =  [0.4]
+        from = 0.0
+        to = 0.5
+        by = 0.1
+      }
+
+      elastic_net = {
+        manual = [0.0]
+        from = 0.0
+        to = 0.0
+        by = 0.0
+
+      }
+    }
+
+    naive_bayes = {
+      smoothing = {
+        from = 0.0
+        to = 0.7
+        by = 0.1
+      }
+    }
+
+    random_forest = {
+      subset_strategy = "sqrt"
+      impurity = "gini"
+      num_classes = 2
+      seed = 20
+      subsampling_rate = 0.8
+
+      max_bins = {
+        manual = [10, 20, 30]
+        from = 0.0
+        to = 0.0
+        by = 0.0
+      }
+
+      max_depths = {
+        manual = [10, 20, 30]
+        from = 0.0
+        to = 0.0
+        by = 0.0
+      }
+
+      num_trees = {
+        manual = [10, 20, 30]
+        from = 0.0
+        to = 0.0
+        by = 0.0
+      }
+
+    }
+
+  }
+
+  send_results = {
+    max_tweets = 20
+    host = "https://www.smartcat.io/umbraco/api/TwitterApi/LatestTweets"
+  }
+
+  id_column = "id"
+  text_column = "text"
+  user_description_column = "userDescription"
+  hashtags_column = "hashtags"
+
+  preprocessing = {
+
+    output_col = "features"
+
+    sufixes = {
+      after_stop_word = "_fl"
+      after_tokenizer = "_t"
+      after_tf = "_tf"
+      after_idf = "_idf"
+      after_w2v = "_v"
+      after_ngram = "ngram"
+      after_count_vectorizer = "_cv"
+      after_clean = "_cl"
+    }
+
+    count_vectorizer = {
+      min_doc_freq = 2
+      min_term_freq = 1
+
+      text = {
+        manual = [3500]
+        from = 500
+        to = 4000
+        by = 500
+      }
+
+      user_description = {
+        manual = [3500]
+        from = 500
+        to = 4000
+        by = 500
+      }
+
+      hashtags = {
+        manual = [150]
+        from = 0
+        to = 0
+        by = 0
+      }
+    }
+
+    tf = {
+
+      text = {
+        from = 500
+        to = 4000
+        by = 500
+      }
+
+      user_description = {
+        from = 500
+        to = 4000
+        by = 500
+      }
+
+      hashtags = {
+        manual = [100]
+        from = 0
+        to = 0
+        by = 0
+      }
+    }
+
+    w2v = {
+
+      text = {
+        from = 500
+        to = 2000
+        by = 500
+      }
+
+      user_description = {
+        from = 500
+        to = 2000
+        by = 500
+      }
+
+    }
+
+    ngram = {
+
+      text = {
+        manual = [2]
+        from = 0
+        to = 0
+        by = 0
+        tf = {
+          manual = [2500]
+          from = 500
+          to = 2000
+          by = 500
+        }
+      }
+
+      user_description = {
+        manual = [2]
+        from = 0
+        to = 0
+        by = 0
+        tf = {
+          manual = [2500]
+          from = 500
+          to = 2000
+          by = 500
+        }
+      }
+
+    }
+
+  }
+
+
+}
