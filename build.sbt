@@ -1,10 +1,10 @@
 lazy val commons = Seq(
-  name := "twicas",
+  name := "twitalyzr",
   version := "0.1-SNAPSHOT",
   scalaVersion := "2.11.0"
 )
 
-lazy val twicas = project.in(file("."))
+lazy val twitalyzr = project.in(file("."))
   .settings(commons: _*)
   .settings(
     libraryDependencies ++= Dependencies.algoDeps ++ Dependencies.commons
