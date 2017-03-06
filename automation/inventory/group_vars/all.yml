@@ -9,3 +9,5 @@ twitalyzr_jar_name: "twitalyzr-assembly-0.1-SNAPSHOT.jar"
 twitalyzr_jar: "{{twitalyzr_dir}}/{{twitalyzr_jar_name}}"
 twitalyzr_model_name: "model.dat"
 twitalyzr_model_dir: "{{twitalyzr_dir}}/{{twitalyzr_model_name}}"
+
+twitalyzr_conf_name: "application.conf"

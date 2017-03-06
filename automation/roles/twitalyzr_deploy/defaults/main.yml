@@ -3,3 +3,4 @@ twitalyzr_src_jar: "{{ lookup('env', 'TWITALYZR_SRC_JAR') }}/{{twitalyzr_jar_nam
 
 twitalyzr_src_model: "{{ lookup('env', 'TWITALYZR_SRC_MODEL') }}"
 
+
