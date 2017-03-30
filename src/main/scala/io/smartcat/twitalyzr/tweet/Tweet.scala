@@ -5,7 +5,7 @@ import twitter4j.Status
 
 case class Tweet(id: String, text: String, favoriteCount: Long,
                  hashtags: Array[String], urls: Array[String], retweetCount: Long,
-                 userFollowers: Long, userFriendsCount: Long, userDescription: String, label: Long) extends Serializable
+                 userFollowers: Long, userFriendsCount: Long, userDescription: String, label: Long, lang: String) extends Serializable
 
 object Tweet extends Serializable {
 
@@ -13,7 +13,7 @@ object Tweet extends Serializable {
     val hashtags = status.getHashtagEntities.map(entity => entity.getText.toLowerCase)
     val urls = status.getURLEntities.map(entity => entity.getText)
     Tweet(status.getId.toString, status.getText, status.getFavoriteCount, hashtags, urls, status.getRetweetCount,
-      status.getUser.getFollowersCount, status.getUser.getFriendsCount, status.getUser.getDescription, -1)
+      status.getUser.getFollowersCount, status.getUser.getFriendsCount, status.getUser.getDescription, -1, status.getLang)
   }
 
   def makeJsonRow(row: Row): Tweet = {
@@ -35,6 +35,7 @@ object Tweet extends Serializable {
     val userFriendsCount = user.getAs[Long]("friends_count")
     val userID = user.getAs[Long]("id").toString
 
-    Tweet(id, tweetText, favoriteCount, hashtags, urls, retweetCount, userFollowersCount, userFriendsCount, userDescription, label)
+    Tweet(id, tweetText, favoriteCount, hashtags, urls, retweetCount, userFollowersCount,
+      userFriendsCount, userDescription, label, row.getAs[String]("lang"))
   }
 }

@@ -9,6 +9,8 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.streaming.twitter.TwitterUtils
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
+import scala.util.{Failure, Success, Try}
+
 object ClassifyJob {
 
 
@@ -42,10 +44,13 @@ object ClassifyJob {
     tweetStream.foreachRDD((rdd, time) => {
       if (!rdd.isEmpty()) {
         val tweets = rdd.map(Tweet.makeStream)
-        val tweetsDF = tweets.toDF
-        val processedDF = loadedModel.transform(tweetsDF)
-
-        TweetNotification.filterAndSend(processedDF)
+        val tweetsDF = tweets.toDF.filter($"lang" === "en")
+        try {
+          val processedDF = loadedModel.transform(tweetsDF)
+          TweetNotification.filterAndSend(processedDF)
+        } catch {
+          case e: Exception => { }
+        }
       }
     })
 
