@@ -9,8 +9,6 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.streaming.twitter.TwitterUtils
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
-import scala.util.{Failure, Success, Try}
-
 object ClassifyJob {
 
 
@@ -49,7 +47,7 @@ object ClassifyJob {
           val processedDF = loadedModel.transform(tweetsDF)
           TweetNotification.filterAndSend(processedDF)
         } catch {
-          case e: Exception => { }
+          case e: Exception => {}
         }
       }
     })
