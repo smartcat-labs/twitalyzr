@@ -42,10 +42,13 @@ object ClassifyJob {
     tweetStream.foreachRDD((rdd, time) => {
       if (!rdd.isEmpty()) {
         val tweets = rdd.map(Tweet.makeStream)
-        val tweetsDF = tweets.toDF
-        val processedDF = loadedModel.transform(tweetsDF)
-
-        TweetNotification.filterAndSend(processedDF)
+        val tweetsDF = tweets.toDF.filter($"lang" === "en")
+        try {
+          val processedDF = loadedModel.transform(tweetsDF)
+          TweetNotification.filterAndSend(processedDF)
+        } catch {
+          case e: Exception => {}
+        }
       }
     })
 
